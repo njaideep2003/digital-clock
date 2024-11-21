@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Clock with Date, Time, and Day</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #2e3b4e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+        }
+        .container {
+            text-align: center;
+            background-color: #001667;
+            padding: 40px 60px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        .date {
+            font-size: 1.5rem;
+            color: #eeeeee;
+            margin-bottom: 10px;
+        }
+        .day {
+            font-size: 1.5rem;
+            color: #f0f0f0;
+            margin-bottom: 10px;
+        }
+        .time {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #00bcd4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="date" id="date"></div>
+        <div class="day" id="day"></div>
+        <div class="time" id="time"></div>
+    </div>
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+
+            // Format the date
+            const date = new Intl.DateTimeFormat('en-GB', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            }).format(now);
+
+            // Get the hours, minutes, seconds, and AM/PM
+            let hours = now.getHours();
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+
+            // Format the time (12-hour format with AM/PM)
+            const time = `${hours}:${minutes}:${seconds} ${ampm}`;
+
+            // Format the day
+            const day = new Intl.DateTimeFormat('en-GB', {
+                weekday: 'long'
+            }).format(now);
+
+            // Update the HTML elements
+            document.getElementById('date').textContent = `Current Date: ${date}`;
+            document.getElementById('day').textContent = `Day: ${day}`;
+            document.getElementById('time').textContent = `Time: ${time}`;
+        }
+
+        // Call the function immediately and then every second
+        setInterval(updateDateTime, 1000);
+        updateDateTime(); 
+    </script>
+</body>
+</html>
